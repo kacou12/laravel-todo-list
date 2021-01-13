@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -13,5 +14,6 @@
                 </div>
             </div>
         </div>
+        <a href="{{ route('todos.index') }}" class="btn btn-primary">Mon Todo list</a>
     </div>
 </x-app-layout>

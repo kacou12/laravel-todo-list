@@ -1,0 +1,18 @@
+
+.header{
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+}
+.header *{
+    margin-right: 15px;
+}
+
+main{
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}

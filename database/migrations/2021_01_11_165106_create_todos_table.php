@@ -17,9 +17,9 @@ class CreateTodosTable extends Migration
             $table->id("id_todo");
             $table->string('titre');
             $table->string('description');
-            $table->integer('auteur_membre_id');
-            $table->integer('cible_membre_id');
-            $table->boolean("status");
+            //$table->integer('auteur_membre_id');
+            //$table->integer('cible_membre_id');
+            $table->boolean("done");
             $table->timestamps();
         });
     }

@@ -25,9 +25,9 @@ class TodoFactory extends Factory
         return [
             'titre' => $this->faker->name,
             'description' => $this->faker->sentence(10),
-            'auteur_membre_id' => $this->ct(),
-            'cible_membre_id' => $this->getRandomNumber($this->auteur),
-            "status" => rand(0,1)
+            //'auteur_membre_id' => $this->ct(),
+            //'cible_membre_id' => $this->getRandomNumber($this->auteur),
+            "done" => rand(0,1)
         ];
     }
 
