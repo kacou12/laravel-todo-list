@@ -76,6 +76,8 @@ class TodoController extends Controller
     public function edit($id)
     {
         //
+        $todo = Todo::find($id);
+        return view('edit', compact('todo'));
     }
 
     /**
@@ -99,6 +101,8 @@ class TodoController extends Controller
     public function destroy($id)
     {
         //
+        $todo = Todo::find($id)->delete();
+        return back()->with("del_success", 'La todo a bien été Supprimée');
     }
     /**
      * undone for see all todos whose are not done 
@@ -122,5 +126,21 @@ class TodoController extends Controller
         $todos =  Todo::where('done', 1)->paginate(5);
         $number = Todo::where('done', 1)->count();
         return view('todos', compact('todos', "number"));
+    }
+
+    public function makedone($id){
+        $todo = Todo::find($id);
+        $todo->done = 1;
+        $todo->save();
+
+        return redirect()->route('todos.index');
+    }
+
+    public function makeundone($id){
+        $todo = Todo::find($id);
+        $todo->done = 0;
+        $todo->save();
+
+        return redirect()->route('todos.index');
     }
 }
