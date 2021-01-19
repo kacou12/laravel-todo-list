@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -15,9 +17,10 @@ class TodoController extends Controller
     public function index()
     {
         //
-        $todos =  Todo::latest()->paginate(5);
-        $number = Todo::all()->count();
-        return view('todos', compact('todos', 'number'));
+        $users = User::all();
+        $todos =  Todo::where('affectedTo_id',Auth::id())->paginate(5);
+        $number = Todo::where('affectedTo_id',Auth::id())->count();
+        return view('todos', compact('todos', 'number', 'users'));
     }
 
     /**
@@ -48,10 +51,10 @@ class TodoController extends Controller
         Todo::create([
             "titre"=> $request->titre,
             "description" => $request->description,
+            'creator_id' =>Auth::id(),
+            'affectedBy' =>Auth::id()
         ]);
 
-        $todos =  Todo::paginate(5);
-        $number = Todo::all()->count();
 
         return redirect()->route('todos.index');/*view("todos", compact('todos', "number"))*/;
     }
@@ -62,7 +65,7 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Todo $todo)
     {
         //
     }
@@ -73,10 +76,8 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Todo $todo)
     {
-        //
-        $todo = Todo::find($id);
         return view('edit', compact('todo'));
     }
 
@@ -87,9 +88,17 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Todo $todo)
     {
-        //
+        if (!isset($request->done)){
+            
+            $todo->update([$request->all(), $todo->done = 0]);
+        }else{
+
+            $todo->update($request->all());
+        }
+        
+        return redirect()->route('todos.index');
     }
 
     /**
@@ -98,10 +107,9 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        //
-        $todo = Todo::find($id)->delete();
+        $todo = $todo->delete();
         return back()->with("del_success", 'La todo a bien été Supprimée');
     }
     /**
@@ -110,10 +118,11 @@ class TodoController extends Controller
 
     public function undone()
     {
+        $users = User::all();
         # code...
         $todos =  Todo::where('done', 0)->paginate(5);
         $number = Todo::where('done', 0)->count();
-        return view('todos', compact('todos', "number"));
+        return view('todos', compact('todos', "number", 'users'));
     }
 
     /**
@@ -122,25 +131,38 @@ class TodoController extends Controller
 
     public function done()
     {
+        $users = User::all();
         # code...
         $todos =  Todo::where('done', 1)->paginate(5);
         $number = Todo::where('done', 1)->count();
-        return view('todos', compact('todos', "number"));
+        return view('todos', compact('todos', "number", 'users'));
     }
 
-    public function makedone($id){
-        $todo = Todo::find($id);
+    public function makedone(Todo $todo){
         $todo->done = 1;
-        $todo->save();
+        $todo->update();
 
-        return redirect()->route('todos.index');
+        return back();
     }
 
-    public function makeundone($id){
-        $todo = Todo::find($id);
+    public function makeundone(Todo $todo){
         $todo->done = 0;
-        $todo->save();
+        $todo->update();
 
-        return redirect()->route('todos.index');
+        return back();
+    }
+
+    /**
+     * Affected $todo->id any user 
+     */
+
+    public function affectedTo(todo $todo, user $user)
+    {
+        $todo->affectedTo_id = $user->id;
+        $todo->affectedBy_id = Auth::id();
+
+        $todo->update(); 
+        
+        return back();
     }
 }

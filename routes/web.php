@@ -27,7 +27,9 @@ Route::resource('todos',TodoController::class);
 Route::get('undone', [TodoController::class, 'undone'])->name('todos.undone')->middleware(['auth']);
 Route::get('done', [TodoController::class, 'done'])->name('todos.done')->middleware(['auth']);
 
-Route::put('makedone/{id}', [TodoController::class, 'makedone'])->name('makedone')->middleware(['auth']);
-Route::put('makeundone/{id}', [TodoController::class, 'makeundone'])->name('makeundone')->middleware(['auth']);
+Route::put('makedone/{todo}', [TodoController::class, 'makedone'])->name('makedone')->middleware(['auth']);
+Route::put('makeundone/{todo}', [TodoController::class, 'makeundone'])->name('makeundone')->middleware(['auth']);
+
+Route::get('/{todo}/affectedTo/{user}',[TodoController::class, 'affectedTo'])->name('affectedTo')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
