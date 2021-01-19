@@ -3,6 +3,7 @@
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,4 +33,8 @@ Route::put('makeundone/{todo}', [TodoController::class, 'makeundone'])->name('ma
 
 Route::get('/{todo}/affectedTo/{user}',[TodoController::class, 'affectedTo'])->name('affectedTo')->middleware(['auth']);
 
+
 require __DIR__.'/auth.php';
+Route::get('/index', function () {
+    return view('index');
+});

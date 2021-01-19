@@ -12,37 +12,7 @@
                             </strong>
                             <small>
                                 {{ dd($todo->affectedTo) }}
-                                {{-- Creee par --}}
-                                Creee le {{ $todo->created_at }} par 
-                                @if($todo->creator_id == Auth::id()){
-                                    moi meme
-                                }@else{
-                                   {{ $todo->user->name }}
-                                }@endif
-                                {{-- affecte par --}}
-                                @if ($todo->affectedTo->id != 0){
-
-                                    {{-- affecte a  --}}
-                                    affecté a
-                                    @if($todo->affectedTo->id == Auth::id()){
-                                        moi meme
-                                    }@else{
-                                    {{ $todo->affectedTo->name }}
-                                    }@endif
-                                    
-                                    par 
-                                    @if($todo->affectedBy->id == Auth::id()){
-                                        moi meme
-                                    }@else{
-                                    {{ $todo->affectedBy->name }}
-                                    }@endif
-                                    
-                                }
-                                @else{
-                                    Non Affecté
-                                }
-                                @endif
-
+                               
                                 
                             </small>
                         </p>
