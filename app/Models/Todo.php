@@ -11,6 +11,18 @@ class Todo extends Model
     protected $fillable = ['titre','description',/*'auteur_membre_id','cible_membre_id',*/"done"];
     public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
+
+    public function affectedTo()
+    {
+        return $this->belongsTo(User::class, 'affectedTo');
+    }
+
+    public function affectedBy()
+    {
+        return $this->belongsTo(User::class, 'affectedBy');
+    }
+
+    
 }

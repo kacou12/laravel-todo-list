@@ -40,10 +40,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function comments()
     {
-        return $this->hasMany(Todo::class, 'id_user', 'id');
+        return $this->hasMany(Todo::class, 'id', 'id');
     }
 
 }
