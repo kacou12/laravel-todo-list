@@ -51,7 +51,7 @@ class TodoController extends Controller
         Todo::create([
             "titre"=> $request->titre,
             "description" => $request->description,
-            'creator_id' =>Auth::id(),
+            'creator_id' =>Auth::id()
         ]);
 
 
@@ -119,20 +119,18 @@ class TodoController extends Controller
     {
         $users = User::all();
         # code...
-        $todos =  Todo::where('done', 0)->paginate(5);
+        $todos =  Todo::where('done', 0)->paginate(4);
         $number = Todo::where('done', 0)->count();
         return view('todos', compact('todos', "number", 'users'));
     }
 
-    /**
-     * undone for see all todos whose are  done 
-     */
+
 
     public function done()
     {
         $users = User::all();
         # code...
-        $todos =  Todo::where('done', 1)->paginate(5);
+        $todos =  Todo::where('done', 1)->paginate(4);
         $number = Todo::where('done', 1)->count();
         return view('todos', compact('todos', "number", 'users'));
     }
@@ -163,5 +161,10 @@ class TodoController extends Controller
         $todo->update(); 
         
         return back();
+    }
+    public function test(){
+        $user = User::find(6);
+        dd($user->affectedTo);
+        //return view('index', compact('user'));
     }
 }
