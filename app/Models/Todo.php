@@ -16,12 +16,12 @@ class Todo extends Model
 
     public function affectedTo()
     {
-        return $this->belongsTo(User::class, 'affectedTo');
+        return $this->belongsTo(User::class, 'affectedTo_id');
     }
 
     public function affectedBy()
     {
-        return $this->belongsTo(User::class, 'affectedBy');
+        return $this->belongsTo(User::class, 'affectedBy_id');
     }
 
     

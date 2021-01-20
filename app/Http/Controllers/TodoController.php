@@ -52,7 +52,6 @@ class TodoController extends Controller
             "titre"=> $request->titre,
             "description" => $request->description,
             'creator_id' =>Auth::id(),
-            'affectedBy' =>Auth::id()
         ]);
 
 
