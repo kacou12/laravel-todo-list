@@ -12,37 +12,52 @@
                             </strong>
                             <small>
                                  {{-- Creee par --}}
-                                Creee le {{ $todo->created_at }} par 
+                                Creee le {{ $todo->created_at->from() }} par 
                                 @if($todo->creator_id == Auth::id())
-                                    moi meme
+                                    moi
                                 @else
                                     {{ $todo->user->name }}
                                 @endif
-                                {{-- affecte par --}}
-                                @if ($todo->affectedTo_id != 0)
+                               <p>
+                                        {{-- affecte par --}}
+                                    @if ($todo->affectedTo_id != 0)
 
                                     {{-- affecte a  --}}
                                     affecté a
                                     @if($todo->affectedTo->id == Auth::id())
-                                        moi meme
+                                        moi
                                     @else
                                         {{ $todo->affectedTo->name }}
                                     @endif
                                     
                                     par 
                                     @if($todo->affectedBy->id == Auth::id())
-                                        moi meme
+                                        moi
                                     @else
                                     {{ $todo->affectedBy->name }}
                                     @endif
                                     
 
-                                @else
-                                    non Affecté
-                                
-                                @endif
+                                    @else
+                                        non Affecté
+                                    
+                                    @endif
+                               </p>
 
                             </small>
+                            
+
+                            {{-- Information about ended time todo --}}
+                            @if ($todo->done == 1)
+                                <small>
+                                    <p>
+                                        terminée
+                                        {{ $todo->updated_at->from() }} - en
+                                        {{ $todo->updated_at->diffForHumans($todo->created_at, 1) }}
+
+                                    </p>
+                                </small>
+                            @endif
                         </p>
                         <details>
                             <summary>

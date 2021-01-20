@@ -36,6 +36,7 @@
     
     <!-- Custom styles for this template -->
     <link href="sticky-footer-navbar.css" rel="stylesheet">
+    @notify_css
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -51,6 +52,9 @@
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item active">
                 <a class="nav-link" aria-current="page" href="{{ route('todos.create') }}">Ajouter une todo</a>
+              </li>
+              <li class="nav-link">
+                <span style="color: white;">{{ auth()->user()->name }}</span>
               </li>
               <li class="nav-item">
                 <form action="/logout" method="post">
@@ -100,6 +104,8 @@
     
     <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>  
   </body>
+  @notify_js
+  @notify_render
 </html>
 
 

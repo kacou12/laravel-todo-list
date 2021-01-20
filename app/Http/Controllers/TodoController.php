@@ -48,14 +48,14 @@ class TodoController extends Controller
             "description" => 'required|string|bail|max:500'
         ]);
         
-        Todo::create([
+        $todo = Todo::create([
             "titre"=> $request->titre,
             "description" => $request->description,
             'creator_id' =>Auth::id()
         ]);
 
-
-        return redirect()->route('todos.index');/*view("todos", compact('todos', "number"))*/;
+        notify()->success("La todo <span class='bagde badge-dark'>#$todo->id</span> vient d'etre créee. ");
+        return redirect()->route('todos.index');
     }
 
     /**
@@ -96,7 +96,7 @@ class TodoController extends Controller
 
             $todo->update($request->all());
         }
-        
+        notify()->success("La todo <span class='bagde badge-dark'>#$todo->id</span> a bien été modifiée. ");
         return redirect()->route('todos.index');
     }
 
@@ -108,8 +108,9 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        $todo = $todo->delete();
-        return back()->with("del_success", 'La todo a bien été Supprimée');
+        $todo->delete();
+        notify()->error("La todo <span class='bagde badge-dark'>#$todo->id</span> a bien été supprimée. ");
+        return back();
     }
     /**
      * undone for see all todos whose are not done 
@@ -119,8 +120,9 @@ class TodoController extends Controller
     {
         $users = User::all();
         # code...
-        $todos =  Todo::where('done', 0)->paginate(4);
+        $todos =  Todo::where('done', 0)->orderby('id', 'DESC')->paginate(4);
         $number = Todo::where('done', 0)->count();
+        
         return view('todos', compact('todos', "number", 'users'));
     }
 
@@ -130,7 +132,7 @@ class TodoController extends Controller
     {
         $users = User::all();
         # code...
-        $todos =  Todo::where('done', 1)->paginate(4);
+        $todos =  Todo::where('done', 1)->orderby('id', 'DESC')->paginate(4);
         $number = Todo::where('done', 1)->count();
         return view('todos', compact('todos', "number", 'users'));
     }
@@ -139,12 +141,16 @@ class TodoController extends Controller
         $todo->done = 1;
         $todo->update();
 
+        notify()->success("La todo <span class='bagde badge-dark'>#$todo->id</span> est terminéé. ");
+
         return back();
     }
 
     public function makeundone(Todo $todo){
         $todo->done = 0;
         $todo->update();
+
+        notify()->error("La todo <span class='bagde badge-dark'>#$todo->id</span>est en cours. ");
 
         return back();
     }
@@ -159,6 +165,9 @@ class TodoController extends Controller
         $todo->affectedBy_id = Auth::id();
 
         $todo->update(); 
+        $af = $todo->affectedTo->name;
+
+        notify()->error("La todo <span class='bagde badge-dark'>#$todo->id</span>a été affecté a <span class='bagde badge-dark'>$af</span>. ");
         
         return back();
     }

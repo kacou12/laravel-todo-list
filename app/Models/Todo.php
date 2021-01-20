@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Todo extends Model
 {
     use HasFactory;
-    protected $fillable = ['titre','description',/*'auteur_membre_id','cible_membre_id',*/"done"];
+    protected $fillable = ['titre','description','creator_id',"done"];
     
     public function user()
     {
