@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Todo extends Model
 {
     use HasFactory;
+    use Notifiable;
+
     protected $fillable = ['titre','description','creator_id',"done"];
     
     public function user()

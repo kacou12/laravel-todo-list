@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use App\Models\User;
+use App\Notifications\todoAffected;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -166,6 +167,8 @@ class TodoController extends Controller
 
         $todo->update(); 
         $af = $todo->affectedTo->name;
+
+        //$user->notify(new todoAffected($todo));
 
         notify()->error("La todo <span class='bagde badge-dark'>#$todo->id</span>a été affecté a <span class='bagde badge-dark'>$af</span>. ");
         
