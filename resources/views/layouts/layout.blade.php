@@ -53,7 +53,10 @@
                 <a class="nav-link" aria-current="page" href="{{ route('todos.create') }}">Ajouter une todo</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" disabled>Link</a>
+                <form action="/logout" method="post">
+                  @csrf
+                  <button class="nav-link btn btn-secondary">Deconnexion</button>
+                </form>
               </li>
             </ul>
           </div>

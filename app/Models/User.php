@@ -40,9 +40,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function comments()
+
+    public function create_todo()
     {
-        return $this->hasMany(Todo::class, 'id', 'id');
+        return $this->belongsTo(User::class, 'creator_id', 'id');
+    }
+
+    public function affect_to_other()
+    {
+        return $this->belongsTo(User::class, 'affectedTo_id', 'id');
+    }
+
+    public function affectedTo()
+    {
+        return $this->belongsTo(User::class, 'affectedBy_id', 'id');
     }
 
 
