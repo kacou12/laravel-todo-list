@@ -168,7 +168,7 @@ class TodoController extends Controller
         $todo->update(); 
         $af = $todo->affectedTo->name;
 
-        //$user->notify(new todoAffected($todo));
+        $user->notify(new todoAffected($todo));
 
         notify()->error("La todo <span class='bagde badge-dark'>#$todo->id</span>a été affecté a <span class='bagde badge-dark'>$af</span>. ");
         

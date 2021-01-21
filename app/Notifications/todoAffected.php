@@ -32,7 +32,8 @@ class todoAffected extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        //return ['mail'];
+        return ['database'];
     }
 
     /**
