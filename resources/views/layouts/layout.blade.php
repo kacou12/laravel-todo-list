@@ -117,7 +117,7 @@
   
                 </div>
               @endauth
-              <li class="nav-item ml-10">
+              <li class="nav-item ml-2">
                 <form action="/logout" method="post">
                   @csrf
                   <button class="nav-link btn btn-secondary">Deconnexion</button>

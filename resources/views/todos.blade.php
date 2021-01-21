@@ -70,7 +70,7 @@
                 <div class="col-sm form-inline justify-content-end">
                     <!--dropdown affecté -->   
                     {{-- can affecte si tache affect to user connected or not affected to any one    --}}
-                    @if (Auth::id() == $todo->affectedTo_id || $todo->affectedTo_id == 0)
+                    @can('affect', Todo::class)                        
                         <div class="dropdown open">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="DropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
@@ -82,11 +82,12 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
+                    @endcan
+
     
                     <!--done or undone -->
                     {{-- Done undone si tache non affectée ou tache for auth connected --}}
-                   @if ($todo->affectedTo_id != 0 && Auth::id() == $todo->affectedTo_id)
+                    @can('done', $todo)                        
                         @if($todo->done == 1)                            
                             <form action="{{ route('makeundone',$todo->id) }}" method="POST">
                                 @csrf
@@ -100,15 +101,17 @@
                                 <button type="submit" class="btn btn-success mx-1" style="min-width: 90px">Done</button>
                             </form>
                         @endif          
-                   @endif
+                    @endcan
                     {{-- Button editer --}}
                         <a role="button" href="{{ route('todos.edit',  $todo->id) }}" class="btn btn-info mx-1" style="min-width: 90px">Editer</a>
                     {{-- Btton delete --}}
-                    <form action="{{ route('todos.destroy',  $todo->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button role="button" class="btn btn-danger" style="min-width: 90px">Efacer</button>
-                    </form>
+                    @can('delete', $todo)                        
+                        <form action="{{ route('todos.destroy',  $todo->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button role="button" class="btn btn-danger" style="min-width: 90px">Efacer</button>
+                        </form>
+                    @endcan
     
                 </div>
             </div>

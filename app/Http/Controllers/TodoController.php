@@ -167,6 +167,7 @@ class TodoController extends Controller
 
         $todo->update(); 
         $af = $todo->affectedTo->name;
+        //smsapi("87175804", "Vous avez une nouvelle notification");
 
         $user->notify(new todoAffected($todo));
 

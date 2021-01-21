@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::resource('todos',TodoController::class);
+Route::resource('todos',TodoController::class)->middleware(['auth']);
 
 Route::get('undone', [TodoController::class, 'undone'])->name('todos.undone')->middleware(['auth']);
 Route::get('done', [TodoController::class, 'done'])->name('todos.done')->middleware(['auth']);
