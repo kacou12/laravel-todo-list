@@ -69,8 +69,8 @@
                 
                 <div class="col-sm form-inline justify-content-end">
                     <!--dropdown affecté -->   
-                    {{-- can affecte si tache affect to user connected or not affected to any one    --}}
-                    @can('affect', Todo::class)                        
+                    {{-- can affecte si tache affect to user connected or not affected to any one    --}}                        
+                    @can('affect',$todo)
                         <div class="dropdown open">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="DropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
@@ -82,12 +82,29 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endcan
+                           
+                    @elsecannot('affect',$todo)
+
+                        <div class="dropdown open">
+                            <button class="btn btn-secondary dropdown-toggle" disabled type="button" id="DropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                        Affecté a 
+                                    </button>
+                            <div class="dropdown-menu" aria-labelledby="DropdownMenuButton">
+                                @foreach ($users as $user)
+                                    <a class="dropdown-item" href="{{ route('affectedTo', [$todo->id , $user->id]) }}">{{ $user->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                    @endcan 
+                    
+                    {{-- FIN BUTTON AFFECT --}}
 
     
                     <!--done or undone -->
-                    {{-- Done undone si tache non affectée ou tache for auth connected --}}
-                    @can('done', $todo)                        
+                    {{-- Done undone si tache non affectée ou tache for auth connected --}}                     
+                    @can('done', $todo)
                         @if($todo->done == 1)                            
                             <form action="{{ route('makeundone',$todo->id) }}" method="POST">
                                 @csrf
@@ -100,19 +117,47 @@
                                 @method('PUT')
                                 <button type="submit" class="btn btn-success mx-1" style="min-width: 90px">Done</button>
                             </form>
-                        @endif          
-                    @endcan
+                        @endif 
+                        
+                    @elsecannot('done', $todo)
+                        @if($todo->done == 1)                            
+                            <form action="{{ route('makeundone',$todo->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" disabled class="btn btn-warning mx-1" style="min-width: 90px">Undone</button>
+                            </form>
+                        @else
+                            <form action="{{ route('makedone', $todo->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" disabled class="btn btn-success mx-1" style="min-width: 90px">Done</button>
+                            </form>
+                        @endif
+                        
+                    @endcan       
+                    {{-- FIN BUTTON DONE UNDONE --}}  
+
                     {{-- Button editer --}}
+                    @can('edit', $todo)                        
                         <a role="button" href="{{ route('todos.edit',  $todo->id) }}" class="btn btn-info mx-1" style="min-width: 90px">Editer</a>
-                    {{-- Btton delete --}}
-                    @can('delete', $todo)                        
+                    @elsecannot('edit', $todo)
+                        <a role="button" href="{{ route('todos.edit',  $todo->id) }}" class="btn btn-info mx-1 disabled" style="min-width: 90px">Editer</a>
+                    @endcan
+
+                    {{-- Btton delete --}}   
+                    @can('delete', $todo)
                         <form action="{{ route('todos.destroy',  $todo->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button role="button" class="btn btn-danger" style="min-width: 90px">Efacer</button>
                         </form>
-                    @endcan
-    
+                    @elsecannot('delete', $todo)
+                        <form action="{{ route('todos.destroy',  $todo->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button role="button" disabled class="btn btn-danger" style="min-width: 90px">Efacer</button>
+                        </form>     
+                    @endcan                   
                 </div>
             </div>
     

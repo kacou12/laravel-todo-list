@@ -20,27 +20,29 @@ class TodoPolicy
     {
         //
     }
-    public function affect(Todo $todo)
+    public function affect(User $user , Todo $todo)
     {
-        return Auth::id() === $todo->affectedTo_id || $todo->affectedTo_id === 0;
+        return in_array(Auth::id(), [$todo->affectedTo_id, $todo->affectedBy_id]);
         # code...
     }
 
-    public function done(Todo $todo)
+
+    public function done(User $user , Todo $todo)
     {
         # code...
+        //todo mmust be affected to user connected et lui seul peut le supprimer
         return $todo->affectedTo_id != 0 && Auth::id() == $todo->affectedTo_id;
     }
 
-    public function edit(Todo $todo)
+    public function edit(User $user , Todo $todo)
     {
-
+        //auth connecte doit etre affecteur ou l'affecte pour editer
         return in_array(Auth::id(), [$todo->affectedTo_id, $todo->affectedBy_id]);
     }
 
-    public function delete(Todo $todo)
+    public function delete(User $user , Todo $todo)
     {
         # code...
-        return $todo->affectedTo_id != 0 && Auth::id() == $todo->affectedTo_id;
+        return in_array(Auth::id(), [$todo->affectedTo_id, $todo->affectedBy_id]);
     }
 }
