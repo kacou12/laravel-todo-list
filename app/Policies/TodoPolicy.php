@@ -22,7 +22,7 @@ class TodoPolicy
     }
     public function affect(User $user , Todo $todo)
     {
-        return in_array(Auth::id(), [$todo->affectedTo_id, $todo->affectedBy_id]);
+        return in_array(Auth::id(), [$todo->affectedTo_id, $todo->affectedBy_id]) || $todo->affectedTo_id == 0;
         # code...
     }
 

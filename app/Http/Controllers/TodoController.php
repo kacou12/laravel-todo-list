@@ -19,7 +19,7 @@ class TodoController extends Controller
     {
         //
         $users = User::all();
-        $todos =  Todo::where('affectedTo_id',Auth::id())->paginate(5);
+        $todos =  Todo::where('affectedTo_id',Auth::id())->orderby('id', 'DESC')->paginate(5);
         $number = Todo::where('affectedTo_id',Auth::id())->count();
         return view('todos', compact('todos', 'number', 'users'));
     }
